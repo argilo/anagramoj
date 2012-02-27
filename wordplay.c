@@ -149,7 +149,7 @@ Version 1.00  03-29-91  One and two word anagrams
 #define SAFETY_ZONE MAX_WORD_LENGTH + 1
 #define MAX_ANAGRAM_WORDS 32
 #define MAX_PATH_LENGTH 256
-#define MAX_ANAGRAMS 1000
+#define MAX_ANAGRAMS 10000
 
 char   *uppercase (char *s);
 char   *alphabetic (char *s);
