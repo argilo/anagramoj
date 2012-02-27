@@ -148,6 +148,7 @@ Version 1.00  03-29-91  One and two word anagrams
 #define SAFETY_ZONE MAX_WORD_LENGTH + 1
 #define MAX_ANAGRAM_WORDS 32
 #define MAX_PATH_LENGTH 256
+#define MAX_ANAGRAMS 1000
 
 char   *uppercase (char *s);
 char   *alphabetic (char *s);
@@ -177,8 +178,8 @@ int     vowelcheck;
 
 int    *lindx1; 
 int    *lindx2;
-int     findx1[26];
-int     findx2[26];
+int     findx1[28];
+int     findx2[28];
 
 int main (int argc, char *argv[])
 {
@@ -777,7 +778,7 @@ int main (int argc, char *argv[])
   printf ("Beginning creation of first letter indexes.\n");
 */
 
-  for (i = 0; i < 26; i++)
+  for (i = 0; i < 28; i++)
   {
     findx1[i] = -1;
     findx2[i] = -2;
@@ -905,7 +906,7 @@ char *alphabetic (char *s)
 
   pos = 0;
   for (i = 0; i < (int) strlen (s); i++) 
-    if (((s[i] >= 'A') && (s[i] <= 'Z')) || ((s[i] >= 'a') && (s[i] <= 'z')))
+    if (((s[i] >= 'A') && (s[i] <= '\\')) || ((s[i] >= 'a') && (s[i] <= 'z')))
       alphstr[pos++] = s[i];
   alphstr[pos] = '\0';
 
@@ -922,7 +923,7 @@ int numvowels (char *s)
   for (cptr = s; *cptr != '\0'; cptr++)
     switch (*cptr)
     {
-      case 'A':  case 'E':  case 'I':  case 'O':  case 'U':  case 'Y':  
+      case 'A':  case 'E':  case 'I':  case 'O':  case 'U':  
 	vcount++; break;
     }
   return (vcount);
@@ -1017,6 +1018,7 @@ void anagramr7 (char *s, char **accum, int *minkey, int *level)
       for (j = 0; j < *level; j++) printf ("%s ", accum[j]);
       printf ("%s\n", words2ptrs[i]);
       extsuccess = 1;
+	  if (rec_anag_count >= MAX_ANAGRAMS) exit(0);
       continue;
     }
 
@@ -1117,8 +1119,7 @@ int intmask (char *s)
 
   mask = 0;
   for (sptr = s; *sptr != '\0'; sptr++) 
-    if ((*sptr >= 'A') && (*sptr <= 'Z')) mask |= 1 << (int) (*sptr - 'A');
+    if ((*sptr >= 'A') && (*sptr <= '\\')) mask |= 1 << (int) (*sptr - 'A');
 
   return (mask);
 }
-
