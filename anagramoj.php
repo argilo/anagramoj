@@ -31,36 +31,36 @@
     return "/\\b(" . implode("|", $novaj_vortoj) . ")\\b/";
   }
 
-  if (isset($_POST["vorto"])) {
+  if (!empty($_POST["vorto"])) {
     $vorto = kodigu($_POST["vorto"]);
     $inkluzivu = "";
 
-    if (isset($_POST["inkluzivu"])) {
+    if (!empty($_POST["inkluzivu"])) {
       $inkluzivu = kodigu($_POST["inkluzivu"]);
     }
 
     if (strlen($vorto) - strlen($inkluzivu) <= 25) {
       $parametroj = "-s -f vortoj.txt";
-      if (isset($_POST["maksvortoj"])) {
+      if (!empty($_POST["maksvortoj"])) {
         $parametroj .= " -d" . intval($_POST["maksvortoj"]);
       }
-      if (isset($_POST["maksliteroj"])) {
+      if (!empty($_POST["maksliteroj"])) {
         $parametroj .= " -m" . intval($_POST["maksliteroj"]);
       }
-      if (isset($_POST["minliteroj"])) {
+      if (!empty($_POST["minliteroj"])) {
         $parametroj .= " -n" . intval($_POST["minliteroj"]);
       }
-      if (isset($_POST["kandidatoj"]) && $_POST["kandidatoj"] == "jes") {
+      if (!empty($_POST["kandidatoj"]) && $_POST["kandidatoj"] == "jes") {
         $parametroj .= " -l -x";
       }
-      if (isset($_POST["inkluzivu"])) {
+      if (!empty($_POST["inkluzivu"])) {
         $parametroj .= " -w " . escapeshellarg($inkluzivu);
       }
 
       $rezulto = shell_exec("./wordplay $parametroj " . escapeshellarg($vorto));
       $rezulto = strtolower($rezulto);
 
-      if (isset($_POST["ekskluzivu"])) {
+      if (!empty($_POST["ekskluzivu"])) {
         $regex = faru_regex($_POST["ekskluzivu"]);
 
         $nova_rezulto = array();
