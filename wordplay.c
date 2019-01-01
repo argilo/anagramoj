@@ -883,7 +883,8 @@ int main (int argc, char *argv[])
 
     anagramr7 (remaininitword, accum, &minkey, &level);
     if (rec_anag_count == 0)
-      printf ("\nNo anagrams found by recursive algorithm.\n");
+      if (silent == 0)
+        printf ("\nNo anagrams found by recursive algorithm.\n");
 
   }
   return(0);
