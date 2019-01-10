@@ -1020,7 +1020,7 @@ void anagramr7 (char *s, char **accum, int *minkey, int *level)
       for (j = 0; j < *level; j++) printf ("%s ", accum[j]);
       printf ("%s\n", words2ptrs[i]);
       extsuccess = 1;
-          if (rec_anag_count >= MAX_ANAGRAMS) exit(0);
+      if (rec_anag_count >= MAX_ANAGRAMS) exit(0);
       continue;
     }
 
