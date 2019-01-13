@@ -158,14 +158,13 @@ void    anagramr7 (char *s, char **accum, int *minkey, int *level);
 char   *extract (char *s1, char *s2);
 int     intmask (char *s);
 
-char  **words2;  /* Candidate word index (pointers to the words) */
+char  **words2ptrs;  /* Candidate word index (pointers to the words) */
 char   *words2mem;  /* Memory block for candidate words  */
-char  **words2ptrs; /* For copying the word indexes */
 char  **wordss;    /* Keys */
 char   *keymem;     /* Memory block for keys */
 int    *wordmasks; /* Mask of which letters are contained in each word */
 int     ncount;    /* Number of candidate words */
-int     longestlength; /*  Length of longest word in words2 array */
+int     longestlength; /*  Length of longest word in words2ptrs array */
 char    largestlet;
 int     rec_anag_count;  /*  For recursive algorithm, keeps track of number
                          of anagrams fond */
@@ -524,7 +523,7 @@ int main (int argc, char *argv[])
 
 /* Malloc pointers for the word indexes */
 
-  if ((words2 = (char **) malloc (ncount * sizeof (char *))) == (char **) NULL)
+  if ((words2ptrs = (char **) malloc (ncount * sizeof (char *))) == (char **) NULL)
   {
     fprintf (stderr, "Insufficient memory.  malloc() returned NULL.\n");
     exit (-1);
@@ -532,11 +531,11 @@ int main (int argc, char *argv[])
 
 /*  Go through the loaded words and index the beginning of each word */
 
-  words2[0] = words2mem;
+  words2ptrs[0] = words2mem;
   j = 1;
   for (i = 0; i < w2size; i++)
     if (j < ncount)
-      if (words2mem[i] == '\0') words2[j++] = words2mem + i + 1;
+      if (words2mem[i] == '\0') words2ptrs[j++] = words2mem + i + 1;
 
 
   if (silent == 0) printf ("\n%d words loaded (%d byte block).  "
@@ -549,17 +548,6 @@ int main (int argc, char *argv[])
       printf ("\nNo candidate words were found, so there are no anagrams.\n");
     exit(0);
   }
-
-/* Make a copy of the pointers from the words2 array (called words2ptrs) */
-
-  if ((words2ptrs = (char **) malloc (ncount * sizeof (char *))) ==
-      (char **) NULL)
-  {
-    fprintf (stderr, "Insufficient memory; malloc returned NULL.\n");
-    exit (-1);
-  }
-
-  for (i = 0; i < ncount; i++) words2ptrs[i] = words2[i];
 
 /* Make a copy of the word list, then sort each word in the new list
    putting letters of the words in alphabetical order */
@@ -588,7 +576,7 @@ int main (int argc, char *argv[])
 
   for (i = 0; i < ncount; i++)
   {
-    strcpy (alphbuffer, alphabetic (words2[i]));
+    strcpy (alphbuffer, alphabetic (words2ptrs[i]));
     strcpy (ubuffer, uppercase (alphbuffer));
     strcpy (keymemptr, ubuffer);
     keymemptr += strlen (alphbuffer) + 1;
@@ -631,9 +619,7 @@ int main (int argc, char *argv[])
     while ((switches != 0) | (gap != 1));
   }
 
-/* Sort the second "sorted" list of candidate words by first letter,
-   keeping references to the original word list, sorted by length (words2)
-   intact (the words2ptrs array).   */
+/* Sort the second "sorted" list of candidate words by first letter. */
 
   size = ncount;
   gap = size;
@@ -667,9 +653,9 @@ int main (int argc, char *argv[])
     for (i = 0; i < ncount; i++)
     {
       if (silent == 0)
-        printf ("%6d.  %s\n", i, words2[i]);
+        printf ("%6d.  %s\n", i, words2ptrs[i]);
       else
-        printf ("%s\n", words2[i]);
+        printf ("%s\n", words2ptrs[i]);
     }
   }
 
