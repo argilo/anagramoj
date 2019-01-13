@@ -227,12 +227,6 @@ int main (int argc, char *argv[])
   int      j;
   int      k;
 
-/*
-  printf ("Command line parameters:\n");
-  for (i = 0; i < argc; i++) printf ("\"%s\" ", argv[i]);
-  printf ("\n");
-*/
-
   if (argc < 2)
   {
     fprintf (stderr,
@@ -664,10 +658,6 @@ int main (int argc, char *argv[])
    of array wordss.  Of course, the algorithm below works because
    wordss has already been sorted by first letter earlier.  */
 
-/*
-  printf ("Beginning creation of first letter indexes.\n");
-*/
-
   for (i = 0; i < 28; i++)
   {
     findx1[i] = -1;
@@ -825,16 +815,6 @@ void anagramr7 (char *s, char **accum, int *minkey, int *level)
   int i, j, extsuccess, icurlet, newminkey, s_mask;
   char exts[MAX_WORD_LENGTH];
 
-/*  Print arguments passed in for debugging purposes */
-
-/*
-  printf ("------------------------------------------------\n");
-  printf ("anagramr called with: (\"%s\", (", s);
-
-  for (i = 0; i < *level; i++) printf ("\"%s\" ", accum[i]);
-  printf ("), %d, %d)\n", *minkey, *level);
-*/
-
 /*  Exceeded depth specified by user */
 
   if (*level >= max_depth)
@@ -872,12 +852,6 @@ void anagramr7 (char *s, char **accum, int *minkey, int *level)
   icurlet = (int) s[0] - (int) 'A';
   for (i = max (*minkey, findx1[icurlet]); i <= findx2[icurlet]; i++)
   {
-
-/*
-    printf ("Considering word \"%s\" (key \"%s\").  s = \"%s\" and i = %d\n",
-             words2ptrs[i], wordss[i], s, i);
-*/
-
 /*  Quick check for extraction.  If it fails, the extract check will fail.
     If this one passes, we must still do the extract a few steps below.  */
 
