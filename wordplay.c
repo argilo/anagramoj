@@ -163,7 +163,6 @@ char   *words2mem;  /* Memory block for candidate words  */
 char  **words2ptrs; /* For copying the word indexes */
 char  **wordss;    /* Keys */
 char   *keymem;     /* Memory block for keys */
-int    *wordsn;    /* Lengths of each word in words2 */
 int    *wordmasks; /* Mask of which letters are contained in each word */
 int     ncount;    /* Number of candidate words */
 int     longestlength; /*  Length of longest word in words2 array */
@@ -551,20 +550,6 @@ int main (int argc, char *argv[])
     exit(0);
   }
 
-/* Store lengths of words from words2 array in wordsn array */
-
-  if ((wordsn = (int *) malloc (ncount * sizeof (int))) == NULL)
-  {
-    fprintf (stderr, "Insufficient memory; malloc returned NULL.\n");
-    exit (-1);
-  }
-
-  for (i = 0; i < ncount; i++)
-  {
-    strcpy (alphbuffer, alphabetic (words2[i]));
-    wordsn[i] = (int) strlen (alphbuffer);
-  }
-
 /* Make a copy of the pointers from the words2 array (called words2ptrs) */
 
   if ((words2ptrs = (char **) malloc (ncount * sizeof (char *))) ==
@@ -606,8 +591,8 @@ int main (int argc, char *argv[])
     strcpy (alphbuffer, alphabetic (words2[i]));
     strcpy (ubuffer, uppercase (alphbuffer));
     strcpy (keymemptr, ubuffer);
-    keymemptr += wordsn[i] + 1;
-    keyoffset += wordsn[i] + 1;
+    keymemptr += strlen (alphbuffer) + 1;
+    keyoffset += strlen (alphbuffer) + 1;
 
   }
 
@@ -673,33 +658,6 @@ int main (int argc, char *argv[])
   }
   while ((switches != 0) | (gap != 1));
   largestlet = wordss[ncount - 1][0];
-
-/* Sort the list of candidate words (words2 array) by length */
-
-  size = ncount;
-  gap = size;
-  do
-  {
-    gap = max (((gap * 10) / 13), 1);
-    switches = 0;
-    for (i = 0; i < (size - gap); i++)
-    {
-      j = i + gap;
-      keyi = wordsn[i];
-      keyj = wordsn[j];
-      if (keyi > keyj)
-      {
-        iholdn = wordsn[i];
-        wordsn[i] = wordsn[j];
-        wordsn[j] = iholdn;
-        wholdptr = words2[i];
-        words2[i] = words2[j];
-        words2[j] = wholdptr;
-        switches++;
-      }
-    }
-  }
-  while ((switches != 0) | (gap != 1));
 
 /* Print candidate word list */
 
