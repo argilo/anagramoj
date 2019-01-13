@@ -177,8 +177,6 @@ int     silent;
 int     max_depth;
 int     vowelcheck;
 
-int    *lindx1;
-int    *lindx2;
 int     findx1[28];
 int     findx2[28];
 
@@ -715,59 +713,6 @@ int main (int argc, char *argv[])
       else
         printf ("%s\n", words2[i]);
     }
-  }
-
-
-/* Create indexes into words2 array by word length.  Words of length i
-   will be in elements lindx1[i] through lindx2[i] of array words2.
-   Of course, the algorithm below works because words2 has already
-   been sorted by word length earlier.  */
-
-  if ((lindx1 = (int *) malloc ((longestlength + 1) * sizeof (int)))
-                        == (int *) NULL)
-  {
-    fprintf (stderr, "Insufficient memory.  malloc() returned NULL.\n");
-    exit (-1);
-  }
-
-  if ((lindx2 = (int *) malloc ((longestlength + 1) * sizeof (int)))
-                        == (int *) NULL)
-  {
-    fprintf (stderr, "Insufficient memory.  malloc() returned NULL.\n");
-    exit (-1);
-  }
-
-  for (i = 0; i <= longestlength; i++)
-  {
-    lindx1[i] = -1;
-    lindx2[i] = -2;
-  }
-
-  if (ncount > 0)
-  {
-    curpos = 0;
-    curlen = wordsn[curpos];
-    lindx1[curlen] = curpos;
-    do
-    {
-      while (curpos < ncount)
-      {
-        if (wordsn[curpos] == curlen)
-          curpos++;
-        else
-          break;
-      }
-
-      if (curpos >= ncount)
-      {
-        lindx2[curlen] = ncount - 1;
-        break;
-      }
-      lindx2[curlen] = curpos - 1;
-      curlen = wordsn[curpos];
-      lindx1[curlen] = curpos;
-    }
-    while (curpos < ncount);
   }
 
 /* Create indexes into wordss array by first letter.  Words with first
